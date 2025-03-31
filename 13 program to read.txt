@@ -1,0 +1,74 @@
+// Online C++ compiler to run C++ program online
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <algorithm>
+#include <ctime>
+
+using namespace std;
+
+// Function to generate a file with 100 random integers
+void generateFile(const string& filename) {
+    ofstream outFile(filename);
+    if (!outFile) {
+        cerr << "Error opening file for writing!" << endl;
+        return;
+    }
+
+    srand(time(0)); // Seed for random numbers
+    for (int i = 0; i < 100; i++) { 
+        outFile << (rand() % 1000) << " "; // Random integers between 0 and 999
+    }
+    outFile.close();
+}
+
+// Function to read integers from file
+vector<int> readFile(const string& filename) {
+    ifstream inFile(filename);
+    vector<int> numbers;
+    int num;
+
+    if (!inFile) {
+        cerr << "Error opening file for reading!" << endl;
+        return numbers;
+    }
+
+    while (inFile >> num) {
+        numbers.push_back(num);
+    }
+    inFile.close();
+    return numbers;
+}
+
+// Function to write integers to file
+void writeFile(const string& filename, const vector<int>& numbers) {
+    ofstream outFile(filename);
+    if (!outFile) {
+        cerr << "Error opening file for writing!" << endl;
+        return;
+    }
+    for (int num : numbers) {
+        outFile << num << " ";
+    }
+    outFile.close();
+}
+
+int main() {
+    string filename = "chapter_13_file_of_100.txt";
+
+    // Step 1: Generate file with random numbers
+    generateFile(filename);
+    cout << "File generated successfully!" << endl;
+
+    // Step 2: Read numbers from file
+    vector<int> numbers = readFile(filename);
+    
+    // Step 3: Sort the numbers
+    sort(numbers.begin(), numbers.end());
+
+    // Step 4: Write sorted numbers back to file
+    writeFile(filename, numbers);
+    cout << "Numbers sorted and written back to file!" << endl;
+
+    return 0;
+}
